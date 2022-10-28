@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const colors = require('colors')
+const listEndpoints = require('express-list-endpoints')
 
 const connectDB = require('./config/db')
 
@@ -16,12 +17,15 @@ dotenv.config({
 
 //crear objeto app
 const app = express()
+app.use(express.json())
 
 //ejecutar la conexión
 connectDB()
 
 app.use('/api/v1/bootcamps', bootcampsRoutes)
 app.use('/api/v1/users', UserRoutes)
+
+console.log(listEndpoints(app))
 
 //ejecutar servidor de desarrollo de expres
 app.listen(process.env.PORT, () => {
