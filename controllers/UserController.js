@@ -52,14 +52,14 @@ exports.crearUser = async (req, res) => {
 //PUT
 exports.actualizarUser = async (req, res) => {
     //actializar usuario por id
-    await User.update(req.body,{
+    await User.update(req.body, {
         where: {
             id: req.params.id
         }
     });
 
     //consultar datos actualizados
-    const upUser =await User.findByPk(req.params.id)
+    const upUser = await User.findByPk(req.params.id)
 
     res.status(200).json(
         {
@@ -70,11 +70,20 @@ exports.actualizarUser = async (req, res) => {
 }
 
 
-//DELETE
-exports.borrarUser = (req, res) => {
+//DELETE borrar un user
+exports.borrarUser = async (req, res) => {
+    //buscar usuario por id
+    const u = await User.findByPk(req.params.id)
+    //borrar usuario por id
+    await User.destroy({
+        where: {
+            id: req.params.id
+        }
+    });
     res.status(200).json(
         {
-            "message": `aqui se va a eliminar el usuario ${req.params.id}`
+            "succes": true,
+            "data": u
         }
     )
 }
