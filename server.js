@@ -8,6 +8,8 @@ const connectDB = require('./config/db')
 //Dependencias de la rutas
 const bootcampsRoutes = require('./routes/BootcampsRoutes')
 const UserRoutes = require('./routes/UserRoutes')
+const ReviewRoutes = require('./routes/ReviewRoutes')
+const CoursersRoutes = require('./routes/CoursersRouters')
 
 
 //establecer el arc de conf con variable de entorno
@@ -24,6 +26,8 @@ connectDB()
 
 app.use('/api/v1/bootcamps', bootcampsRoutes)
 app.use('/api/v1/users', UserRoutes)
+app.use('/api/v1/reviews', ReviewRoutes)
+app.use('/api/v1/coursers', CoursersRoutes)
 
 console.log(listEndpoints(app))
 

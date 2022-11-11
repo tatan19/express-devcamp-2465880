@@ -6,24 +6,24 @@ const sequelize = require('../config/seq')
 const { DataTypes, ValidationError } = require('sequelize')
 
 //el modelo
-const UserModel = require('../models/user')
-const user = require('../models/user')
+const CoursersModel = require('../models/coursers')
+const coursers = require('../models/coursers')
 
 //crear el objeto usuario
-const User = UserModel(sequelize, DataTypes)
+const Coursers = CoursersModel(sequelize, DataTypes)
 
 
 
 
 
 //get:obtener detos Red
-exports.traerUsers = async (req, res) => {
+exports.traerCoursers = async (req, res) => {
     try {
-        const users = await User.findAll();
+        const Reviews = await Coursers.findAll();
         res.status(200).json(
             {
                 "succes": true,
-                "data": users
+                "data": Reviews
             }
         )
     } catch (error) {
@@ -36,12 +36,12 @@ exports.traerUsers = async (req, res) => {
 }
 
 //obtener recursos por get
-exports.traerUserPorId = async (req, res) => {
+exports.traerCoursersPorId = async (req, res) => {
 
     try {
-        const userId = await User.findByPk(req.params.id)
+        const ReviewId = await Coursers.findByPk(req.params.id)
 
-        if (!userId) {
+        if (!ReviewId) {
             res.status(422).json(
                 {
                     "succes": false,
@@ -54,7 +54,7 @@ exports.traerUserPorId = async (req, res) => {
             res.status(200).json(
                 {
                     "succes": true,
-                    "data": userId
+                    "data": ReviewId
                 }
             )
         }
@@ -70,13 +70,13 @@ exports.traerUserPorId = async (req, res) => {
 }
 
 //POST: Crear un nuevo recurso
-exports.crearUser = async (req, res) => {
+exports.crearCoursers = async (req, res) => {
     try {
-        const newUser = await User.create(req.body);
+        const newReview = await Coursers.create(req.body);
         res.status(201).json(
             {
                 "succes": true,
-                "data": newUser
+                "data": newReview
             }
         )
     } catch (error) {
@@ -101,10 +101,10 @@ exports.crearUser = async (req, res) => {
 }
 
 //PUT
-exports.actualizarUser = async (req, res) => {
+exports.actualizarCoursers = async (req, res) => {
     try {
-        const upUser = await User.findByPk(req.params.id)
-        if (!upUser) {
+        const upReview = await Coursers.findByPk(req.params.id)
+        if (!upReview) {
             //response de usuario no encontrado
             res.status(422).json(
                 {
@@ -116,16 +116,16 @@ exports.actualizarUser = async (req, res) => {
             )
         } else {
             //actializar usuario por id
-            await User.update(req.body, {
+            await Coursers.update(req.body, {
                 where: {
                     id: req.params.id
                 }
             });
-            const userAct = await User.findByPk(req.params.id)
+            const ReviewAct = await Coursers.findByPk(req.params.id)
             res.status(200).json(
                 {
                     "succes": true,
-                    "data": userAct
+                    "data": ReviewAct
                 }
             )
         }
@@ -140,10 +140,10 @@ exports.actualizarUser = async (req, res) => {
 }
 
 
-//DELETE borrar un user
-exports.borrarUser = async (req, res) => {
+//DELETE borrar un Coursers
+exports.borrarCoursers = async (req, res) => {
     try {
-        const u = await User.findByPk(req.params.id)
+        const u = await Coursers.findByPk(req.params.id)
         if (!u) {
             //response de usuario no encontrado
             res.status(422)
@@ -154,22 +154,22 @@ exports.borrarUser = async (req, res) => {
                     ]
                 })
         } else {
-
+            await Coursers.destroy({
+                where: {
+                    id: req.params.id
+                }
+            })
+            //response
+            res.status(200).json({
+                "success": true,
+                "data": u
+            })
         }
-        await User.destroy({
-            where: {
-                id: req.params.id
-            }
-        })
-        //response
-        res.status(200).json({
-            "success": true,
-            "data": u
-        })
+
     } catch (error) {
         res.status(500).json({
             "success": false,
-            "errors": "error de servidor"
+            "errors": "error de servido"
         })
     }
 }
